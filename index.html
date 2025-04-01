@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <h1>Expense Tracker</h1>
+            <div class="dark-mode-wrapper">
+                <button id="dark-mode-toggle" class="dark-mode-toggle">
+                    <span class="toggle-icons">
+                        <span class="sun-icon">☀</span>
+                        <span class="moon-icon">☽</span>
+                    </span>
+                    <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="settings-container">
+            <h2>Settings</h2>
+            <div class="form-group">
+                <label for="currency-selector">Currency</label>
+                <select id="currency-selector">
+                    <option value="INR" selected>INR (₹)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="JPY">JPY (¥)</option>
+                    <option value="CAD">CAD (C$)</option>
+                    <option value="AUD">AUD (A$)</option>
+                    <option value="CNY">CNY (¥)</option>
+                    <option value="BRL">BRL (R$)</option>
+                    <option value="RUB">RUB (₽)</option>
+                    <option value="KRW">KRW (₩)</option>
+                    <option value="CHF">CHF (Fr)</option>
+                    <option value="MXN">MXN ($)</option>
+                    <option value="SGD">SGD (S$)</option>
+                    <option value="NZD">NZD (NZ$)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="balance-container">
+            <div class="balance-header">
+                <h2>Balance Overview</h2>
+                <button id="refresh-balance" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="filter-group">
+                    <input type="month" id="balance-month-filter" class="month-filter">
+                </div>
+            </div>
+            <div class="balance-cards">
+                <div class="balance-card income-card">
+                    <h3 class="balance-title">Total Income</h3>
+                    <p class="balance-amount" id="total-income">₹0.00</p>
+                </div>
+                <div class="balance-card expenses-card">
+                    <h3 class="balance-title">Total Expenses</h3>
+                    <p class="balance-amount" id="total-expenses">₹0.00</p>
+                </div>
+                <div class="balance-card remaining-card">
+                    <h3 class="balance-title">Remaining</h3>
+                    <p class="balance-amount" id="remaining-amount">₹0.00</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-tabs">
+                <div class="form-tab active" data-tab="expense">Expense</div>
+                <div class="form-tab" data-tab="income">Income</div>
+            </div>
+            
+            <div class="tab-content" id="expense-tab">
+                <h2>Add New Expense</h2>
+                <form id="expense-form">
+                    <div class="form-group">
+                        <label for="expense-name">Description</label>
+                        <input type="text" id="expense-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expense-amount">Amount</label>
+                        <input type="number" id="expense-amount" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expense-category">Category</label>
+                        <select id="expense-category" required>
+                            <option value="">Select Category</option>
+                            <option value="food">Food</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="housing">Housing</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="education">Education</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expense-date">Date</label>
+                        <input type="date" id="expense-date" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Add Expense</button>
+                </form>
+            </div>
+            
+            <div class="tab-content hidden" id="income-tab">
+                <h2>Add New Income</h2>
+                <form id="income-form">
+                    <div class="form-group">
+                        <label for="income-name">Description</label>
+                        <input type="text" id="income-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="income-amount">Amount</label>
+                        <input type="number" id="income-amount" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="income-category">Category</label>
+                        <select id="income-category" required>
+                            <option value="">Select Category</option>
+                            <option value="salary">Salary</option>
+                            <option value="freelance">Freelance</option>
+                            <option value="investments">Investments</option>
+                            <option value="gifts">Gifts</option>
+                            <option value="refunds">Refunds</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="income-date">Date</label>
+                        <input type="date" id="income-date" required>
+                    </div>
+                    
+                    <button type="submit" class="btn income-btn">Add Income</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="transactions-container">
+            <div class="transactions-tabs">
+                <div class="transaction-tab active" data-list="expenses">Expenses</div>
+                <div class="transaction-tab" data-list="income">Income</div>
+                <div class="transaction-tab" data-list="all">All Transactions</div>
+            </div>
+            
+            <div class="filter-controls">
+                <div class="form-group">
+                    <label for="filter-category">Filter by Category</label>
+                    <select id="filter-category">
+                        <option value="all">All Categories</option>
+                        <option value="food">Food</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="housing">Housing</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filter-month">Filter by Month</label>
+                    <input type="month" id="filter-month">
+                </div>
+            </div>
+            
+            <div class="expenses-list-container">
+                <ul id="transactions-list"></ul>
+            </div>
+            
+            <div class="summary">
+                <p>Total: <span id="total-amount">₹0.00</span></p>
+            </div>
+        </div>
+        
+        <div class="analysis-container">
+            <h2>Expenses Analysis</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>Avg. Daily</h3>
+                    <p id="avg-daily">₹0.00</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Highest Expense</h3>
+                    <p id="highest-expense">₹0.00</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Top Category</h3>
+                    <p id="expensive-category">None</p>
+                </div>
+            </div>
+            
+            <div class="category-widgets">
+                <div class="category-widget food-widget">
+                    <div class="category-icon">🍔</div>
+                    <div class="category-info">
+                        <h4>Food</h4>
+                        <p class="category-amount" id="food-amount">₹0.00</p>
+                        <div class="category-trend" id="food-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget transportation-widget">
+                    <div class="category-icon">🚗</div>
+                    <div class="category-info">
+                        <h4>Transport</h4>
+                        <p class="category-amount" id="transportation-amount">₹0.00</p>
+                        <div class="category-trend" id="transportation-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget housing-widget">
+                    <div class="category-icon">🏠</div>
+                    <div class="category-info">
+                        <h4>Housing</h4>
+                        <p class="category-amount" id="housing-amount">₹0.00</p>
+                        <div class="category-trend" id="housing-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget utilities-widget">
+                    <div class="category-icon">💡</div>
+                    <div class="category-info">
+                        <h4>Utilities</h4>
+                        <p class="category-amount" id="utilities-amount">₹0.00</p>
+                        <div class="category-trend" id="utilities-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget entertainment-widget">
+                    <div class="category-icon">🎬</div>
+                    <div class="category-info">
+                        <h4>Entertainment</h4>
+                        <p class="category-amount" id="entertainment-amount">₹0.00</p>
+                        <div class="category-trend" id="entertainment-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget education-widget">
+                    <div class="category-icon">📚</div>
+                    <div class="category-info">
+                        <h4>Education</h4>
+                        <p class="category-amount" id="education-amount">₹0.00</p>
+                        <div class="category-trend" id="education-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-widget other-widget">
+                    <div class="category-icon">📦</div>
+                    <div class="category-info">
+                        <h4>Other</h4>
+                        <p class="category-amount" id="other-amount">₹0.00</p>
+                        <div class="category-trend" id="other-trend">
+                            <span class="trend-icon">→</span>
+                            <span class="trend-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container category-chart-container">
+                    <h3>Category Breakdown</h3>
+                    <canvas id="category-chart"></canvas>
+                </div>
+                
+                <div class="chart-container balance-chart-container">
+                    <h3>Income vs Expenses</h3>
+                    <canvas id="balance-chart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Monthly Overview</h3>
+                <canvas id="monthly-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="budget-container">
+            <h2>Budget Planning</h2>
+            <div class="budget-header">
+                <select id="budget-month">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <button id="add-budget-item" class="btn">Add Budget</button>
+            </div>
+            
+            <div class="budget-list-container">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Planned</th>
+                            <th>Actual</th>
+                            <th>Remaining</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budget-list">
+                        <!-- Budget items will be added here -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td id="total-planned">₹0.00</td>
+                            <td id="total-actual">₹0.00</td>
+                            <td id="total-remaining">₹0.00</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="total-progress"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+        <div class="reports-container">
+            <h2>Financial Reports</h2>
+            <div class="report-tabs">
+                <div class="report-tab active" data-report="cash-flow">Cash Flow</div>
+                <div class="report-tab" data-report="category-breakdown">Category Breakdown</div>
+                <div class="report-tab" data-report="savings-trend">Savings Trend</div>
+            </div>
+            
+            <div class="report-content">
+                <canvas id="report-chart"></canvas>
+            </div>
+            
+            <div class="export-controls">
+                <button id="export-pdf" class="btn">Export as PDF</button>
+                <button id="export-csv" class="btn">Export as CSV</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
