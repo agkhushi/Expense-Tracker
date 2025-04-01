@@ -1,5 +1,7 @@
 # Expense Tracker
 
+🌐 **[Live Demo](https://agkhushi.github.io/Expense-Tracker/)** - Try the application now!
+
 A modern and intuitive expense tracking application built with HTML, CSS, and JavaScript. This application helps users manage their personal finances by tracking income, expenses, and providing detailed financial analysis.
 
 ## Features
@@ -26,7 +28,7 @@ A modern and intuitive expense tracking application built with HTML, CSS, and Ja
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[your-username]/expense-tracker.git
+   git clone https://github.com/agkhushi/Expense-Tracker.git
    ```
 
 2. Open the project directory:
@@ -43,15 +45,16 @@ A modern and intuitive expense tracking application built with HTML, CSS, and Ja
    npx serve
    ```
 
-## Usage
+## Quick Start
 
-1. Add your income and expenses using the respective forms
-2. View your financial overview in the Balance section
-3. Analyze your spending patterns using the charts
-4. Filter transactions by category or month
-5. Toggle between dark and light modes for comfortable viewing
-6. Plan your budget and track your spending goals
-7. Generate and export financial reports
+1. Visit the [Live Demo](https://agkhushi.github.io/Expense-Tracker/)
+2. Add your income and expenses using the respective forms
+3. View your financial overview in the Balance section
+4. Analyze your spending patterns using the charts
+5. Filter transactions by category or month
+6. Toggle between dark and light modes for comfortable viewing
+7. Plan your budget and track your spending goals
+8. Generate and export financial reports
 
 ## Contributing
 
